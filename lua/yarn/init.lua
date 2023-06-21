@@ -1,5 +1,6 @@
 local M = {}
 
+-- internal debugging function to pretty print tables
 P = function(v)
   print(vim.inspect(v))
   return v
@@ -9,6 +10,8 @@ local function is_empty(str)
   return str == nil or str == ""
 end
 
+-- find_package_json searched upwards in the system for the location of the
+-- package.json file
 local function find_package_json()
   local root_dir = vim.fn.findfile("package.json", ".;")
   if is_empty(root_dir) then
@@ -17,6 +20,7 @@ local function find_package_json()
   return root_dir
 end
 
+-- get_scripts parses the given file and extracts the script names
 local function get_scripts(filepath)
   local json = vim.fn.json_decode(vim.fn.readfile(filepath))
   if json == nil then
@@ -29,6 +33,7 @@ local function get_scripts(filepath)
   return names
 end
 
+-- run_cmd runs the selected npm script
 M.run_cmd = function()
   local cmd_name = vim.api.nvim_get_current_line()
   vim.api.nvim_buf_delete(0, { force = true })
@@ -48,7 +53,7 @@ M.run_cmd = function()
   }):sync()
 end
 
--- Define a function to create a popup
+-- create_popup creates a popup with the contents in lines
 local function create_popup(lines)
   local width = 40
   local height = #lines
@@ -90,12 +95,10 @@ local function create_popup(lines)
   return bufnr, winnr
 end
 
-M.go = function()
+M.setup = function()
   local filepath = find_package_json()
   local scripts = get_scripts(filepath)
   create_popup(scripts)
 end
-
--- M.go()
 
 return M
