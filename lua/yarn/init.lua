@@ -95,10 +95,15 @@ local function create_popup(lines)
   return bufnr, winnr
 end
 
-M.setup = function()
+M.run = function()
   local filepath = find_package_json()
   local scripts = get_scripts(filepath)
   create_popup(scripts)
+end
+
+M.setup = function()
+  vim.api.nvim_create_user_command("Yarn", M.run, {})
+  vim.keymap.set("n", "<leader>m", M.run, { nowait = true, noremap = true, desc = "Run NPM tasks" })
 end
 
 return M
