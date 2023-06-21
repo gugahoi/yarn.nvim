@@ -50,7 +50,7 @@ M.run_cmd = function()
       P(return_val)
       P(j:result())
     end,
-  }):sync()
+  }):start()
 end
 
 -- create_popup creates a popup with the contents in lines
@@ -81,13 +81,13 @@ local function create_popup(lines)
   -- Close the popup when pressing any key
   vim.api.nvim_buf_set_keymap(bufnr, "n", "<Esc>", ":q<CR>", { silent = true })
 
-  vim.api.nvim_buf_set_keymap(
-    bufnr,
-    "n",
-    "<CR>",
-    ":lua require('yarn').run_cmd()<CR>",
-    { silent = true, noremap = true }
-  )
+  vim.api.nvim_buf_set_keymap(bufnr, "n", "<CR>", "", {
+    silent = true,
+    noremap = true,
+    callback = function()
+      M.run_cmd()
+    end,
+  })
 
   -- Set the autocmd to close the popup when leaving insert mode
   vim.cmd([[autocmd InsertLeave <buffer> :q]])
