@@ -8,13 +8,19 @@ An npm script runner for neovim.
 
 ```lua
 {
-  "gugahoi/yarn.nvim"
+  "gugahoi/yarn.nvim",
+  dependencies = {
+    "nvim-lua/plenary.nvim"
+  },
+  config = function()
+    require("yarn").setup()
+  end
 }
 ```
 
 ## Features
 
 - [x] list tasks
-- [ ] run task in window
+- [x] run task
 - [ ] see output of tasks
 - [ ] run task in neovim terminal
