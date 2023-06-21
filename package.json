@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "start": "echo 'Item 1'",
+    "stop": "echo 'Item 2: stop'"
+  }
+}
